@@ -1,7 +1,7 @@
 // Copyright Albert Koch 2023
 
-
 #include "WorldPosition.h"
+#include "GameFramework/Actor.h"
 
 // Sets default values for this component's properties
 UWorldPosition::UWorldPosition()
@@ -19,9 +19,11 @@ void UWorldPosition::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("This is a warning!"));
-	UE_LOG(LogTemp, Error, TEXT("This is a error!"));
-	UE_LOG(LogTemp,	Display, TEXT("This is a display message!"));
+	auto objectName = GetOwner()->GetName();
+	auto objectLocation = GetOwner()->GetTransform().GetLocation();
+
+	UE_LOG(LogTemp, Warning, TEXT("This Objects Name is: %s"), *objectName);
+	UE_LOG(LogTemp, Warning, TEXT("This Objects Position is: (x: %f, y: %f, z: %f"), objectLocation.X, objectLocation.Y, objectLocation.Z);
 	
 }
 

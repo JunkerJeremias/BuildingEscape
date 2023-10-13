@@ -25,5 +25,7 @@ protected:
 
 private:
 	float _doorTargetYaw;
+	float _doorInitialYaw;
+	float _doorCurrentYaw;
 	void Init();
 };

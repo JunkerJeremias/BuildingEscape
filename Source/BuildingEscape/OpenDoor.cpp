@@ -33,19 +33,30 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 void UOpenDoor::Rotate(float DeltaTime)
 {
+	
+	_doorCurrentYaw = GetOwner()->GetActorRotation().Yaw;
 
-	FRotator rotation = GetOwner()->GetActorRotation();
+	_doorCurrentYaw = FMath::FInterpTo(_doorCurrentYaw, _doorTargetYaw, DeltaTime, 1);
 
-	rotation.Yaw = FMath::FInterpTo(rotation.Yaw, _doorTargetYaw, DeltaTime, 1);
+	GetOwner()->SetActorRotation(FRotator(0.f, _doorCurrentYaw, 0.f));
 
-	GetOwner()->SetActorRotation(rotation);
+	UE_LOG(LogTemp, Warning, TEXT("Value of %s 's Yaw Value: %f, Target Yaw is: %f, initially the door's Yaw was at: %f"), *GetOwner()->GetName(), _doorCurrentYaw, _doorTargetYaw, _doorInitialYaw);
 
-	UE_LOG(LogTemp, Warning, TEXT("Value of %s 's Yaw Value: %f, Target Yaw is: %f"), *GetOwner()->GetName(), rotation.Yaw, _doorTargetYaw);
+	UE_LOG(LogTemp, Warning, TEXT("Berechne: %f"), FMath::Abs(FMath::Abs(_doorTargetYaw) - FMath::Abs(_doorCurrentYaw)))
+	//Check if greater then 1 becaus 0 will (probably) never be reached
+	if (FMath::Abs(FMath::Abs(_doorTargetYaw) - FMath::Abs(_doorCurrentYaw)) < 1)
+	{
+		if(_doorTargetYaw != _doorInitialYaw)
+			_doorTargetYaw = _doorInitialYaw;
+		else
+			_doorTargetYaw = _doorInitialYaw + 90.0f;
+	}
 
 }
 
 void UOpenDoor::Init()
 {
-	//auto rotation = GetOwner()->GetActorRotation();
-	_doorTargetYaw = GetOwner()->GetActorRotation().Yaw + 90.0f;
+	_doorInitialYaw = GetOwner()->GetActorRotation().Yaw;
+	_doorCurrentYaw = _doorInitialYaw;
+	_doorTargetYaw = _doorInitialYaw + 90.0f;
 }

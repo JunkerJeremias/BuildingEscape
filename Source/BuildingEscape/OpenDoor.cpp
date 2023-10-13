@@ -33,9 +33,9 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 void UOpenDoor::Rotate(float DeltaTime)
 {
-	float doorTargetYaw = _doorTargetYaw;
-	if (_isOpen)
-		doorTargetYaw = _doorInitialYaw;
+	float doorTargetYaw = _doorInitialYaw;
+	if (_pressurePlate->IsOverlappingActor(_actorThatOpens))
+		doorTargetYaw = _doorTargetYaw;
 
 	_doorCurrentYaw = GetOwner()->GetActorRotation().Yaw;
 
@@ -47,10 +47,10 @@ void UOpenDoor::Rotate(float DeltaTime)
 
 	UE_LOG(LogTemp, Warning, TEXT("Berechne: %f"), FMath::Abs(FMath::Abs(doorTargetYaw) - FMath::Abs(_doorCurrentYaw)))
 	//Check if greater then 1 becaus 0 will (probably) never be reached
-	if (FMath::Abs(FMath::Abs(doorTargetYaw) - FMath::Abs(_doorCurrentYaw)) < 1)
-	{
-		_isOpen = !_isOpen;
-	}
+	//if (FMath::Abs(FMath::Abs(doorTargetYaw) - FMath::Abs(_doorCurrentYaw)) < 1)
+	//{
+	//	_isOpen = !_isOpen;
+	//}
 
 }
 

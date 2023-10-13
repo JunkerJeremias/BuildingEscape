@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Engine/TriggerVolume.h"
 #include "OpenDoor.generated.h"
 
 
@@ -31,4 +32,10 @@ private:
 	float _doorCurrentYaw;
 	bool _isOpen;
 	void Init();
+
+	UPROPERTY(EditAnywhere)
+	ATriggerVolume* _pressurePlate;
+
+	UPROPERTY(EditAnywhere)
+	AActor* _actorThatOpens;
 };

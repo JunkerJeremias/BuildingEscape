@@ -24,8 +24,11 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	UPROPERTY(EditAnywhere)
 	float _doorTargetYaw;
+
 	float _doorInitialYaw;
 	float _doorCurrentYaw;
+	bool _isOpen;
 	void Init();
 };

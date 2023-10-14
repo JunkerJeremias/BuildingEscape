@@ -2,6 +2,8 @@
 
 #include "OpenDoor.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/PlayerController.h"
+
 
 // Sets default values for this component's properties
 UOpenDoor::UOpenDoor()
@@ -34,7 +36,7 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 void UOpenDoor::Rotate(float DeltaTime)
 {
 	float doorTargetYaw = _doorInitialYaw;
-	if (_pressurePlate->IsOverlappingActor(_actorThatOpens))
+	if (_pressurePlate && _pressurePlate->IsOverlappingActor(_actorThatOpens))
 		doorTargetYaw = _doorTargetYaw;
 
 	_doorCurrentYaw = GetOwner()->GetActorRotation().Yaw;
@@ -58,4 +60,11 @@ void UOpenDoor::Init()
 {
 	_doorInitialYaw = GetOwner()->GetActorRotation().Yaw;
 	_doorCurrentYaw = _doorInitialYaw;
+
+	_actorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
+
+	if(_actorThatOpens == nullptr)
+		UE_LOG(LogTemp, Error, TEXT("_actorThatOpens nicht zugewiesen für %s"), *GetOwner()->GetName());
+	if (_pressurePlate == nullptr)
+		UE_LOG(LogTemp, Error, TEXT("_pressurePlate nicht zugewiesen für %s"), *GetOwner()->GetName());
 }
